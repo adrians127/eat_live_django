@@ -1,0 +1,35 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eat&Live</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static "/css/styles.css" %}">
+</head>
+<body>
+    <header>
+        <div id="header-logo-container">
+            <p>Eat&Live</p>
+        </div>
+        <ul>
+            <li>Home</li>
+            <li>Calculators</li>
+        </ul>
+    </header>
+
+    <div id="page-content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+    <footer>
+        <p>Aleksandra Sobiesiak, Adrian Stahl</p>
+        <p>2023</p>
+    </footer>
+</body>
+</html>

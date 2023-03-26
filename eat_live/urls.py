@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from frontend import views
-
+from frontend.views import home
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('test/', views.test)
+    path('', home)
 ]

@@ -1,0 +1,43 @@
+html, body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    box-shadow: 0 0 5px 5px rgb(185, 185, 185);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+}
+
+#header-logo-container{
+    text-align: center;
+    width: 30%;
+}
+
+header > ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+}
+
+#page-content {
+    margin: 100px 0;
+    position: relative;
+}
+
+
+footer {
+    position: absolute;
+    box-shadow: 0 0 5px 5px rgb(185, 185, 185);
+    width: 100%;
+    text-align: center;
+    color: gray;
+    bottom: 0;
+}
