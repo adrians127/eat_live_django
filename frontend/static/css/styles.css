@@ -27,8 +27,12 @@ header > ul {
     width: 60%;
 }
 
+#subpage-header {
+    margin: 100px 50px 20px 50px;
+}
+
 #page-content {
-    margin: 100px 0;
+    margin: 20px 50px 100px 50px;
     position: relative;
 }
 
@@ -40,4 +44,9 @@ footer {
     text-align: center;
     color: gray;
     bottom: 0;
+}
+
+#header-list > li > a {
+    text-decoration: none;
+    color: inherit;
 }

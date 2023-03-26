@@ -15,11 +15,17 @@
         <div id="header-logo-container">
             <p>Eat&Live</p>
         </div>
-        <ul>
-            <li>Home</li>
-            <li>Calculators</li>
+        <ul id="header-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/calculators/">Calculators</a></li>
         </ul>
     </header>
+
+    <div id="subpage-header">
+        {% block header %}
+
+        {% endblock %}
+    </div>
 
     <div id="page-content">
         {% block content %}
