@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>Calculators</h1>
+{% endblock header %}
+
+{% block content %}
+<div>
+    <h3>Calculate your BMI, calories and nutritions</h3>
+
+    <form action="/calculators/" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="submit">Submit</button>
+    </form>
+
+    {% if content %}
+    <p>BMI: {{content.0}}</p>
+    <p>Water: {{content.1}}ml</p>
+    <p>Calories: {{content.2.0}}kcal</p>
+    <p>Protein: {{content.2.1.0}} - {{content.2.1.1}}g</p>
+    <p>Fat: {{content.2.2.0}} - {{content.2.2.1}}g</p>
+    <p>Carbons: {{content.2.3.0}} - {{content.2.3.1}}g</p>
+    {% endif %}
+
+</div>
+
+{% endblock content %}
