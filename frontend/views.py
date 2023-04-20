@@ -10,7 +10,7 @@ from calculators.calories_calculator import calculate_nutritions
 
 
 def home(request):
-    return render(request, 'home/home.html')
+    return render(request, 'home.html')
 
 
 def calculators(response):
@@ -26,8 +26,8 @@ def calculators(response):
             content = (calculate_bmi(input.weight, input.height), water_calculate(
                 input.age, input.gender), calculate_nutritions(input.weight, input.height, input.age, input.gender))
 
-        return render(response, 'calculators/calculators.html', {"form": form, 'content': content})
+        return render(response, 'calculators.html', {"form": form, 'content': content})
 
     else:
         form = CreateCalculationForm()
-    return render(response, 'calculators/calculators.html', {"form": form})
+    return render(response, 'calculators.html', {"form": form})

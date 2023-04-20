@@ -3,7 +3,7 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-header{
+#header{
     display: flex;
     justify-content: space-between;
     font-size: 20px;
@@ -20,7 +20,7 @@ header{
     width: 30%;
 }
 
-header > ul {
+#header > ul {
     list-style-type: none;
     display: flex;
     justify-content: space-around;
@@ -37,7 +37,7 @@ header > ul {
 }
 
 
-footer {
+#footer {
     position: absolute;
     box-shadow: 0 0 5px 5px rgb(185, 185, 185);
     width: 100%;
