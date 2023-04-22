@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{% static "/css/styles.css" %}">
 </head>
 <body>
+    
+
     <header id="header">
         <div id="header-logo-container">
             <p>Eat&Live</p>
@@ -18,10 +20,19 @@
         <ul id="header-list">
             <li><a href="/">Home</a></li>
             <li><a href="/calculators/">Calculators</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}" onclick="logout_popup()">Logout</a></li>
+            {% else %}
             <li><a href="/login/">Login</a></li>
             <li><a href="/register/">Register</a></li>
+            {% endif %}
+
+            {% if user.is_superuser %}
+            <li><a href="admin/">Admin Panel</a></li>
+            {% endif %}
         </ul>
     </header>
+
 
     <div id="subpage-header">
         {% block header %}
@@ -39,5 +50,10 @@
         <p>Aleksandra Sobiesiak, Adrian Stahl</p>
         <p>2023</p>
     </footer>
+    <script>
+        function logout_popup(){
+            window.alert("You logged out!");
+        }
+    </script>
 </body>
 </html>

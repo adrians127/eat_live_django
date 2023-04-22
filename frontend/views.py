@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import CreateCalculationForm, CreateLoginForm, CreateRegisterForm
-from .models import CalculationForm, LoginForm
+from .models import CalculationForm
+from .forms import CreateCalculationForm
 from calculators.bmi_calculator import calculate_bmi
 from calculators.water_calculator import water_calculate
 from calculators.calories_calculator import calculate_nutritions
@@ -30,47 +30,4 @@ def calculators(response):
 
     else:
         form = CreateCalculationForm()
-    return render(response, 'calculators.html', {"form": form})
-
-def login(response):
-    if response.method == "POST":
-        form = CreateLoginForm(response.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-
-            #obsługa logowania
-            # ...
-
-            #udało się
-            info = "You successfully logged in!"
-
-
-            #nie udało się
-            # info = "Incorrect email or password. Try again"
-            return render(response, 'login.html', {"form": form, "info":info})
-    else:
-        form = CreateLoginForm()
-    return render(response, 'login.html', {"form": form})
-
-def register(response):
-    if response.method == "POST":
-        form = CreateRegisterForm(response.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            repeatPassword = form.cleaned_data["repeatPassword"]
-
-            #obsługa rejestracji
-            # ...
-
-            #udało się
-            info = "You successfully registered!"
-
-
-            #nie udało się
-            # info = "The registration was unsuccessful"
-            return render(response, 'register.html', {"form": form, "info":info})
-    else:
-        form = CreateRegisterForm()
-    return render(response, 'register.html', {"form": form})
+        return render(response, 'calculators.html', {"form": form})

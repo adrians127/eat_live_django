@@ -7,7 +7,7 @@
 {% block content %}
 <div>
 
-    <form action="/register/" method='post'>
+    <form action="{% url 'register' %}" method='post'>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" name="submit">Submit</button>
@@ -15,6 +15,14 @@
 
     {% if info %}
     <p>{{info}}</p> 
+    {% endif %}
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
 
 </div>

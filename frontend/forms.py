@@ -10,12 +10,3 @@ class CreateCalculationForm(forms.Form):
         ('other', 'Other')
     ]
     gender = forms.ChoiceField(label="Gender", widget=forms.RadioSelect, choices=GENDER_CHOICES)
-
-class CreateLoginForm(forms.Form):
-    email = forms.EmailField(label="Email")
-    password = forms.CharField(label="Password", max_length=40, widget=forms.PasswordInput())
-
-class CreateRegisterForm(forms.Form):
-    email = forms.EmailField(label="Email")
-    password = forms.CharField(label="Password", max_length=40, widget=forms.PasswordInput())
-    repeatPassword = forms.CharField(label="Repeat password", max_length=40, widget=forms.PasswordInput())
