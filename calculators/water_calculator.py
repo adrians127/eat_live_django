@@ -30,9 +30,9 @@ def water_calculate(age, gender):
         return -1
 
     match gender.lower():
-        case 'woman':
+        case 'F':
             return calculate_for_woman(age)
-        case 'man':
+        case 'M':
             return calculate_for_man_and_others(age)
         case _:
             return calculate_for_man_and_others(age)  # for nonbinary persons

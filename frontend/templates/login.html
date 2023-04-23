@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<h1>Login</h1>
-{% endblock header %}
-
 {% block content %}
 <div>
+    <h1 class="subpage-header">Login</h1>
 
     <form action="/login/" method='post'>
         {% csrf_token %}

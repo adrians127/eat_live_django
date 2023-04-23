@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<h1>Home</h1>
-{% endblock header %}
-
 {% block content %}
-<div>
-<p>Home page content</p>
+    {% if user.is_authenticated %}
+        <p>SIEMANO</p>
+        <p>{{user.profile.bio}}</p>
+    {% else %}
+        <div>
+            <h1>Home</h1>
+            <p>Home page content</p>
 
-</div>
-
+        </div>
+    {% endif %}
 {% endblock content %}

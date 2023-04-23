@@ -45,7 +45,7 @@ def register_user(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "You successfully registered!")
-                return redirect('home')
+                return redirect('userpage')
             
             #nie udało się
             info = "The registration was unsuccessful"

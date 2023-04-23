@@ -17,9 +17,9 @@ def calculate_for_man_and_others(body_weight, body_height, age):
 
 def calculate_calories(body_weight, body_height, age, gender, PAL):
     match gender.lower():
-        case 'woman':
+        case 'F':
             CPM = calculate_for_woman(body_weight, body_height, age) * PAL
-        case 'man':
+        case 'M':
             CPM = calculate_for_man_and_others(
                 body_weight, body_height, age) * PAL
         case _:

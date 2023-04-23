@@ -1,12 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import CalculationForm
 from .forms import CreateCalculationForm
 from calculators.bmi_calculator import calculate_bmi
 from calculators.water_calculator import water_calculate
 from calculators.calories_calculator import calculate_nutritions
-
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -21,13 +19,16 @@ def calculators(response):
             weight = form.cleaned_data["weight"]
             height = form.cleaned_data["height"]
             gender = form.cleaned_data["gender"]
-            input = CalculationForm(
-                age=age, weight=weight, height=height, gender=gender)
-            content = (calculate_bmi(input.weight, input.height), water_calculate(
-                input.age, input.gender), calculate_nutritions(input.weight, input.height, input.age, input.gender))
+            activity_lvl = float(form.cleaned_data["activity_lvl"])
+            content = (calculate_bmi(weight, height), water_calculate(
+                age, gender), calculate_nutritions(weight, height, age, gender, activity_lvl))
 
         return render(response, 'calculators.html', {"form": form, 'content': content})
 
     else:
         form = CreateCalculationForm()
         return render(response, 'calculators.html', {"form": form})
+
+@login_required
+def user_page(request):
+    return render(request, 'user_home.html')

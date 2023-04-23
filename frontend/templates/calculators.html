@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 
-{% block header %}
-<h1>Calculators</h1>
-{% endblock header %}
-
 {% block content %}
 <div>
+    <h1>Calculators</h1>
     <h3>Calculate your BMI, calories and nutritions</h3>
 
     <form action="/calculators/" method='post'>
@@ -22,7 +19,6 @@
     <p>Fat: {{content.2.2.0}} - {{content.2.2.1}}g</p>
     <p>Carbons: {{content.2.3.0}} - {{content.2.3.1}}g</p>
     {% endif %}
-
 </div>
 
 {% endblock content %}
