@@ -11,8 +11,6 @@ class RegisterUserForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=40)
     last_name = forms.CharField(max_length=40)
-    gender = forms.ChoiceField(label="Gender", widget=forms.RadioSelect, choices=GENDER_CHOICES)
-    activity_lvl = forms.ChoiceField(label="Activity level (PAL)", widget=forms.RadioSelect, choices=ACTIVITY_LVL_CHOICES)
 
     class Meta:
         model = User
