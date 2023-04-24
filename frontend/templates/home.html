@@ -2,8 +2,9 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <p>SIEMANO</p>
-        <p>{{user.profile.bio}}</p>
+        <h1>Home Page</h1>
+        <h3>Hello {{user.username}}</h3>
+        <p>Changed home page content based on logged user</p>
     {% else %}
         <div>
             <h1>Home</h1>

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CreateLoginForm, RegisterUserForm
+from django.contrib.auth.decorators import login_required
+from .forms import CreateLoginForm, RegisterUserForm, UpdateUserForm, UpdateProfileForm
 
 # Create your views here.
 
@@ -28,7 +28,6 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ("You successfully logged out!"))
     return redirect('home')
 
 def register_user(request):
@@ -38,21 +37,43 @@ def register_user(request):
             form.save()
             username = form.cleaned_data["username"]
             password = form.cleaned_data["password1"]
-            # first_name = form.cleaned_data["first_name"]
 
             #obsługa rejestracji
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.success(request, "You successfully registered!")
-                return redirect('userpage')
+                return redirect('user_update')
             
             #nie udało się
             info = "The registration was unsuccessful"
             return render(request, 'register.html', {"form": form, "info":info})
         else:
-            messages.error(request, "The password is not strong enough")
-            return render(request, 'register.html', {"form": form})
+            info = "The password is not strong enough"
+            return render(request, 'register.html', {"form": form, "info": info})
     else:
         form = RegisterUserForm()
         return render(request, 'register.html', {"form": form})
+
+@login_required
+def user_page(request):
+    return render(request, 'user_home.html')
+
+@login_required
+def user_update_page(request):
+    if request.method == "POST":
+        u_form = UpdateUserForm(request.POST, instance=request.user)
+        p_form = UpdateProfileForm(request.POST, instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            return redirect('userpage')
+        
+    else:
+        u_form = UpdateUserForm(instance=request.user)
+        p_form = UpdateProfileForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+    return render(request, 'user_update.html', context)

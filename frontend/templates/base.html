@@ -21,7 +21,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="/calculators/">Calculators</a></li>
             {% if user.is_authenticated %}
-            <li>My Profile</li>
+            <li><a href="{% url 'userpage' %}">My Profile</a></li>
             <li><a href="{% url 'logout' %}" onclick="logout_popup()">Logout</a></li>
             {% else %}
             <li><a href="/login/">Login</a></li>
@@ -29,7 +29,7 @@
             {% endif %}
 
             {% if user.is_superuser %}
-            <li><a href="admin/">Admin Panel</a></li>
+            <li><a href="/admin/">Admin Panel</a></li>
             {% endif %}
 
         </ul>

@@ -61,7 +61,20 @@ main {
     margin: 0;
 }
 
-#header-list > li > a {
+a {
     text-decoration: none;
     color: inherit;
+}
+
+.user-info-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.user-info-list > li {
+    padding: 10px 0;
+}
+
+.operation-info {
+    color: red;
 }

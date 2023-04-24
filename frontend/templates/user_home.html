@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
+<div class>
     <h1>Hello {{ user.username }}</h1>
+    <h3>Your information</h3>
+    <ul class="user-info-list">
+        <li>First ame: {{user.first_name}}</li>
+        <li>Last name: {{user.last_name}}</li>
+        <li>Email: {{user.email}}</li>
+        <li>Bio: {{ user.profile.bio }}</li>
+        <li>Gender: {{ user.profile.get_gender_display }}</li>
+        <li>Age: {{ user.profile.age }}</li>
+        <li>Weight: {{user.profile.weight}}kg</li>
+        <li>Height: {{user.profile.height}}cm</li>
+        <li>Activity level: {{user.profile.get_activity_level_display}}</li>
+    </ul>
+
+    <button><a href="{% url 'user_update' %}">Update</a></button>
 </div>
 
 {% endblock content %}

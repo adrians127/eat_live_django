@@ -4,7 +4,6 @@ from .forms import CreateCalculationForm
 from calculators.bmi_calculator import calculate_bmi
 from calculators.water_calculator import water_calculate
 from calculators.calories_calculator import calculate_nutritions
-from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -28,7 +27,3 @@ def calculators(response):
     else:
         form = CreateCalculationForm()
         return render(response, 'calculators.html', {"form": form})
-
-@login_required
-def user_page(request):
-    return render(request, 'user_home.html')
