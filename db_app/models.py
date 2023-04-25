@@ -39,6 +39,7 @@ class Recipe(models.Model):
 class RecipeDetail(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.recipe) + "-" + str(self.product)
@@ -51,4 +52,4 @@ class MealLog(models.Model):
     moment_of_day = models.CharField(max_length=15, choices=MOMENT_OF_DAY_CHOICES)
 
     def __str__(self):
-        return str(self.user) + "-" + str(self.date) + " - " + str(self.moment_of_day)
+        return str(self.user) + " - " + str(self.date) + " - " + str(self.moment_of_day)
