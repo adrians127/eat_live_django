@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('', include('members.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('', include('tracker.urls'))
 ]

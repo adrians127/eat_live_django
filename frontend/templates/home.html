@@ -1,15 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h1>Home</h1>
     {% if user.is_authenticated %}
-        <h1>Home Page</h1>
         <h3>Hello {{user.username}}</h3>
-        <p>Changed home page content based on logged user</p>
-    {% else %}
-        <div>
-            <h1>Home</h1>
-            <p>Home page content</p>
+        <div class="track-container">
+            {% for choice in moment_of_day_choices %}
+            <div class="meal-container">
+                <div class="meal-header">
+                    <div class="meal-title-and-plus">
+                        <p>{{ choice.1 }}</p>
+                        <button>+</button>
+                    </div>
+                    <p>x kcal</p>
+                </div>
+                <div class="eaten-list-container">
+                    {% for meal in meal_logs %}
+                        {% if meal.moment_of_day == choice.0 %}
+                        <div class="eaten-element">
+                            <div>
+                                <p>{{ meal.product.name }}</p>
+                                <p>{{ meal.amount }} g</p>
+                                <p> ilosc (w porcji)</p>
+                                <button>edit</button>
+                            </div>
 
+                            <div>
+                                <p> x kcal</p>
+                                <p> x g protein</p>
+                                <p> x g fats</p>
+                                <p> x g carbons</p>
+                            </div>
+                            
+                        </div>
+                            
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
+
+
+    {% else %}
+        <p>Home page content</p>
     {% endif %}
 {% endblock content %}

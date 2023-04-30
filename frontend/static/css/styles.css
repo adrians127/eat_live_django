@@ -78,3 +78,57 @@ a {
 .operation-info {
     color: red;
 }
+
+.track-container{
+}
+
+.meal-container {
+}
+
+.meal-header {
+    padding: 5px 10px;
+    box-shadow: 0 0 5px black;
+    margin: 10px 0;
+}
+
+.meal-title-and-plus {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meal-header * {
+    margin: 0;
+}
+
+
+.eaten-list-container * {
+    margin: 0;
+}
+
+.eaten-element {
+    border-bottom: 1px solid gray;
+    padding: 5px 10px;
+}
+
+.eaten-element > div {
+    display: flex;
+    justify-content: left;
+}
+
+.eaten-element > div > p{
+    width: 25%;
+}
+
+.eaten-element > div:last-child {
+    color: gray;
+}
+
+.eaten-list-container {
+    padding: 0px 10px;
+}
+
+.eaten-list-container > div:last-child {
+    border: none;
+  }
