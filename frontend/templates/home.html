@@ -22,7 +22,9 @@
                                 <p>{{ meal.product.name }}</p>
                                 <p>{{ meal.amount }} g</p>
                                 <p> ilosc (w porcji)</p>
-                                <button>edit</button>
+                                <a href="{% url 'update_meal' meal_log_id=meal.pk %}">
+                                    <button>edit</button>
+                                </a>
                             </div>
 
                             <div>

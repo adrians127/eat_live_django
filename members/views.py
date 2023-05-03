@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import CreateLoginForm, RegisterUserForm, UpdateUserForm, UpdateProfileForm
+from calculators.bmi_calculator import calculate_bmi
+from calculators.water_calculator import water_calculate
+from calculators.calories_calculator import calculate_nutritions
 
 # Create your views here.
 
@@ -56,7 +59,16 @@ def register_user(request):
 
 @login_required
 def user_page(request):
-    return render(request, 'user_home.html')
+    person = request.user.profile
+    person_data_bmi = calculate_bmi(person.weight, person.height)
+    person_data_water = water_calculate(person.age, person.gender)
+    person_data_nutritions = calculate_nutritions(person.weight, person.height, person.age, person.gender, person.activity_level)
+    context = {
+        "data_bmi": person_data_bmi,
+        "data_water": person_data_water,
+        "data_nutritions": person_data_nutritions
+    }
+    return render(request, 'user_home.html',context)
 
 @login_required
 def user_update_page(request):

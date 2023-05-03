@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update a meal</h1>
+    <form action="{% url 'update_meal' meal_log_id=meal_log.pk %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="submit">Submit</button>
+    </form>
+{% endblock content %}

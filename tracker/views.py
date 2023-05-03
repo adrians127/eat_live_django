@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog
-from .forms import AddMealLogForm
+from .forms import AddMealLogForm, UpdateMealLogForm
 from calculators.calories_calculator import calculate_nutritions
 from members.models import Profile
 
@@ -15,7 +15,6 @@ def calculate_daily_stats(request):
     # person_data = calculate_calories(60, 170, 20, 'M', 1.2)
     return person_data
 
-# Create your views here.
 def home(request):
     if request.user.is_authenticated:
         meal_logs = MealLog.objects.filter(user=request.user.profile, date=timezone.now().date())
@@ -48,3 +47,15 @@ def add_meal_log(request, moment_of_day):
         form = AddMealLogForm()
         form.fields['moment_of_day'].initial = moment_of_day
         return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day})
+
+@login_required
+def update_meal_log(request, meal_log_id):
+    meal_log = MealLog.objects.get(id=meal_log_id)
+    if request.method == "POST":
+        form = UpdateMealLogForm(request.POST, instance=meal_log)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = UpdateMealLogForm(instance=meal_log)
+        return render(request, "update_meal_log.html", {"form": form, "meal_log": meal_log})
