@@ -131,4 +131,9 @@ a {
 
 .eaten-list-container > div:last-child {
     border: none;
-  }
+}
+
+.daily-stats-container {
+    display: flex;
+    justify-content: space-around;
+}

@@ -41,6 +41,25 @@
             {% endfor %}
         </div>
 
+        <div class="daily-stats-container">
+            <div>
+                <p>Calories</p>
+                <p>x / {{ data.0 }} kcal</p>
+            </div>
+            <div>
+                <p>Proteins</p>
+                <p>x / {{ data.1 }} g</p>
+            </div>
+            <div>
+                <p>Fats</p>
+                <p>x / {{ data.2 }} g</p>
+            </div>
+            <div>
+                <p>Carbons</p>
+                <p>x / {{ data.3 }} g</p>
+            </div>
+        </div>
+
 
     {% else %}
         <p>Home page content</p>
