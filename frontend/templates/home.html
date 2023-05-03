@@ -10,7 +10,7 @@
                 <div class="meal-header">
                     <div class="meal-title-and-plus">
                         <p>{{ choice.1 }}</p>
-                        <button>+</button>
+                        <a href="{% url 'add_meal' moment_of_day=choice.0 %}">+</a>
                     </div>
                     <p>x kcal</p>
                 </div>
