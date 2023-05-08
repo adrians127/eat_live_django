@@ -7,6 +7,7 @@ from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct
 from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm
 from calculators.calories_calculator import calculate_nutritions
 from members.models import Profile
+import re
 
 
 class Nutritions:
@@ -103,6 +104,8 @@ def home(request, date=timezone.now().date()):
 def home_history(request, date):
     if date.endswith('favicon.ico'):
         return HttpResponse(status=204)
+    if date == 'add_product':
+        return add_product(request)
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date.split(' ')[0], date_format).date()
     print(date)
