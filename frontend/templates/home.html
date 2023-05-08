@@ -4,6 +4,11 @@
     <h1>Home</h1>
     {% if user.is_authenticated %}
         <h3>Hello {{user.username}}</h3>
+        <div class="track-date-container">
+            <a href="{% url 'home2' date=previous_date %}"><button><</button></a>
+            <h3>{{ date }}</h3>
+            <a href="{% url 'home2' date=next_date %}"><button>></button></a>
+        </div>
         <div class="track-container">
             {% for choice in moment_of_day_choices %}
             <div class="meal-container">
@@ -12,7 +17,34 @@
                         <p>{{ choice.1 }}</p>
                         <a href="{% url 'add_meal' moment_of_day=choice.0 %}">+</a>
                     </div>
-                    <p>x kcal</p>
+                    <div class="moment-of-day-nutritions">
+                        {% if choice.0 == "BREAKFAST" %}
+                            <p>{{ calculated_nutritions.breakfast.calories }} kcal</p>
+                            <p>{{ calculated_nutritions.breakfast.proteins }} g proteins</p>
+                            <p>{{ calculated_nutritions.breakfast.fats }} g fats</p>
+                            <p>{{ calculated_nutritions.breakfast.carbons }} g carbons</p>
+                        {% elif choice.0 == "BRUNCH" %}
+                            <p>{{ calculated_nutritions.brunch.calories }} kcal</p>
+                            <p>{{ calculated_nutritions.brunch.proteins }} g proteins</p>
+                            <p>{{ calculated_nutritions.brunch.fats }} g fats</p>
+                            <p>{{ calculated_nutritions.brunch.carbons }} g carbons</p>
+                        {% elif choice.0 == "LUNCH" %}
+                            <p>{{ calculated_nutritions.lunch.calories }} kcal</p>
+                            <p>{{ calculated_nutritions.lunch.proteins }} g proteins</p>
+                            <p>{{ calculated_nutritions.lunch.fats }} g fats</p>
+                            <p>{{ calculated_nutritions.lunch.carbons }} g carbons</p>
+                        {% elif choice.0 == "SNACK" %}
+                            <p>{{ calculated_nutritions.snack.calories }} kcal</p>
+                            <p>{{ calculated_nutritions.snack.proteins }} g proteins</p>
+                            <p>{{ calculated_nutritions.snack.fats }} g fats</p>
+                            <p>{{ calculated_nutritions.snack.carbons }} g carbons</p>
+                        {% elif choice.0 == "DINNER" %}
+                            <p>{{ calculated_nutritions.dinner.calories }} kcal</p>
+                            <p>{{ calculated_nutritions.dinner.proteins }} g proteins</p>
+                            <p>{{ calculated_nutritions.dinner.fats }} g fats</p>
+                            <p>{{ calculated_nutritions.dinner.carbons }} g carbons</p>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="eaten-list-container">
                     {% for meal in meal_logs %}
@@ -21,18 +53,20 @@
                             <div>
                                 <p>{{ meal.product.name }}</p>
                                 <p>{{ meal.amount }} g</p>
-                                <p> ilosc (w porcji)</p>
                                 <a href="{% url 'update_meal' meal_log_id=meal.pk %}">
                                     <button>edit</button>
                                 </a>
+                                <a href="{% url 'add_favourite_product' meal_log_id=meal.pk %}">
+                                    <button>love</button>
+                                </a>
                             </div>
 
-                            <div>
+                            <!-- <div>
                                 <p> x kcal</p>
                                 <p> x g protein</p>
                                 <p> x g fats</p>
                                 <p> x g carbons</p>
-                            </div>
+                            </div> -->
                             
                         </div>
                             
@@ -46,19 +80,19 @@
         <div class="daily-stats-container">
             <div>
                 <p>Calories</p>
-                <p>x / {{ data.0 }} kcal</p>
+                <p>{{ calculated_nutritions.all_nutritions.calories }} / {{ data.0 }} kcal</p>
             </div>
             <div>
                 <p>Proteins</p>
-                <p>x / {{ data.1 }} g</p>
+                <p>{{ calculated_nutritions.all_nutritions.proteins }} / {{ data.1 }} g</p>
             </div>
             <div>
                 <p>Fats</p>
-                <p>x / {{ data.2 }} g</p>
+                <p>{{ calculated_nutritions.all_nutritions.fats }} / {{ data.2 }} g</p>
             </div>
             <div>
                 <p>Carbons</p>
-                <p>x / {{ data.3 }} g</p>
+                <p>{{ calculated_nutritions.all_nutritions.carbons }} / {{ data.3 }} g</p>
             </div>
         </div>
 

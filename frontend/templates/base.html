@@ -18,6 +18,7 @@
         <ul id="header-list">
             <li><a href="/">Home</a></li>
             {% if user.is_authenticated %}
+            <li><a href="{% url 'add_product' %}">Add Product</a></li>
             <li><a href="{% url 'userpage' %}">My Profile</a></li>
             <li><a href="{% url 'logout' %}" onclick="logout_popup()">Logout</a></li>
             {% else %}

@@ -108,15 +108,7 @@ a {
 
 .eaten-element > div {
     display: flex;
-    justify-content: left;
-}
-
-.eaten-element > div > p{
-    width: 25%;
-}
-
-.eaten-element > div:last-child {
-    color: gray;
+    justify-content: space-around;
 }
 
 .eaten-list-container {
@@ -139,4 +131,16 @@ a {
 .user-info-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.moment-of-day-nutritions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.track-date-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 from datetime import date
 from members.models import Profile
 
@@ -46,7 +47,7 @@ class RecipeDetail(models.Model):
 
 class MealLog(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    date = models.DateField(default=date.today())
+    date = models.DateField(default=timezone.now())
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
     moment_of_day = models.CharField(max_length=15, choices=MOMENT_OF_DAY_CHOICES)
@@ -59,4 +60,4 @@ class FavouriteProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.user + " " + self.product)
+        return str(self.user) + " " + str(self.product)
