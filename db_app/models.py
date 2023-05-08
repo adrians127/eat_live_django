@@ -53,3 +53,10 @@ class MealLog(models.Model):
 
     def __str__(self):
         return str(self.user) + " - " + str(self.date) + " - " + str(self.moment_of_day)
+
+class FavouriteProduct(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.user + " " + self.product)

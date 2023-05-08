@@ -59,3 +59,8 @@ def update_meal_log(request, meal_log_id):
     else:
         form = UpdateMealLogForm(instance=meal_log)
         return render(request, "update_meal_log.html", {"form": form, "meal_log": meal_log})
+    
+@login_required
+def delete_meal_log(meal_log_id):
+    MealLog.objects.filter(id=meal_log_id).delete()
+    return redirect('home')

@@ -7,4 +7,6 @@
         {{ form.as_p }}
         <button type="submit" name="submit">Submit</button>
     </form>
+
+    <a href="{% url 'delete_meal' meal_log_id=meal_log.pk %}"><button>Delete</button></a>
 {% endblock content %}
