@@ -25,13 +25,20 @@ class CalculatedNutritions:
         self.snack = Nutritions()
         self.dinner = Nutritions()
         self.all_nutritions = Nutritions()
+    
+    def round_values(self):
+        for attr_name in dir(self):
+            attr = getattr(self, attr_name)
+            if isinstance(attr, Nutritions):
+                attr.calories = round(attr.calories, 1)
+                attr.proteins = round(attr.proteins, 2)
+                attr.fats = round(attr.fats, 2)
+                attr.carbons = round(attr.carbons, 2)
 
 @login_required
 def calculate_daily_stats(request):
-    # meal_logs = MealLog.objects.filter(user=request.user.profile, date=timezone.now().date())
     person = request.user.profile
     person_data = calculate_nutritions(person.weight, person.height, person.age, person.gender, person.activity_level)
-    # person_data = calculate_calories(60, 170, 20, 'M', 1.2)
     return person_data
 
 def update_nutritions(calculated_nutritions, meal_logs):
@@ -79,7 +86,7 @@ def update_nutritions(calculated_nutritions, meal_logs):
         calculated_nutritions.all_nutritions.fats += fats
         calculated_nutritions.all_nutritions.carbons += carbons
 
-    
+        calculated_nutritions.round_values()
 
 def home(request, date=timezone.now().date()):
     if not request.user.is_authenticated:
