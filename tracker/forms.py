@@ -1,5 +1,5 @@
 from django import forms
-from db_app.models import MealLog, Product
+from db_app.models import MealLog, Product, ShoppingProduct
 
 # class AddMealLogForm(forms.ModelForm):
 #     favorite_product = forms.ModelChoiceField(
@@ -42,3 +42,8 @@ class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'calories', 'proteins', 'fats', 'carbons', 'portion']
+
+class AddShoppingProductForm(forms.ModelForm):
+    class Meta:
+        model = ShoppingProduct
+        fields = ['product', 'amount']

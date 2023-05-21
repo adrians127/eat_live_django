@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Shopping list</h1>
+
+    <h2>Existing products</h2>
+    <ul>
+        {% for shopping_product in shopping_products %}
+            {% if shopping_product.amount == None %}
+            <li>{{ shopping_product.product.name }}</li>
+            {% else %}
+            <li>{{ shopping_product.product.name }} - {{ shopping_product.amount }} g</li>
+            {% endif %}
+        {% empty %}
+            <li>No products in the shopping list.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add a new product</h2>
+    <form method="post" action="{% url 'shopping_list' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Product</button>
+    </form>
+{% endblock content %}

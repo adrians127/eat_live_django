@@ -3,12 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from datetime import timedelta, datetime
-from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct
-from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm
+from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct
+from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm
 from calculators.calories_calculator import calculate_nutritions
-from members.models import Profile
-import re
-
 
 class Nutritions:
     def __init__(self) -> None:
@@ -113,6 +110,8 @@ def home_history(request, date):
         return HttpResponse(status=204)
     if date == 'add_product':
         return add_product(request)
+    if date == 'shopping_list':
+        return shopping_list(request)
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date.split(' ')[0], date_format).date()
     print(date)
@@ -172,3 +171,26 @@ def add_product(request):
     else:
         form = AddProductForm()
         return render(request, 'add_product.html', {"form": form})
+    
+@login_required
+def shopping_list(request):
+    # Get the current user's shopping products
+    shopping_products = ShoppingProduct.objects.filter(user=request.user.profile)
+
+    if request.method == 'POST':
+        # Process the form submission
+        form = AddShoppingProductForm(request.POST)
+        if form.is_valid():
+            shopping_product = form.save(commit=False)
+            shopping_product.user = request.user.profile
+            shopping_product.save()
+            return redirect('shopping_list')
+    else:
+        # Display the form
+        form = AddShoppingProductForm()
+
+    context = {
+        'shopping_products': shopping_products,
+        'form': form
+    }
+    return render(request, 'shopping_list.html', context)

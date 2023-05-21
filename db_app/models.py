@@ -61,3 +61,11 @@ class FavouriteProduct(models.Model):
 
     def __str__(self):
         return str(self.user) + " " + str(self.product)
+
+class ShoppingProduct(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.user) + " " + str(self.product) + " " + str(self.amount)
