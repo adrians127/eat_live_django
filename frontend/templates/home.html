@@ -76,23 +76,43 @@
             </div>
             {% endfor %}
         </div>
-
+        <!-- class="{% if calculated_nutritions.all_nutritions.calories >= daily_needs.0 %}green-line{% endif %}" -->
         <div class="daily-stats-container">
             <div>
                 <p>Calories</p>
-                <p>{{ calculated_nutritions.all_nutritions.calories }} / {{ data.0 }} kcal</p>
+                <p class="
+                {% if calculated_nutritions.all_nutritions.calories <= daily_needs.0 %}
+                    green-line
+                {% else %}
+                    red-line
+                {% endif %}">{{ calculated_nutritions.all_nutritions.calories }} / {{ daily_needs.0 }} kcal</p>
             </div>
             <div>
                 <p>Proteins</p>
-                <p>{{ calculated_nutritions.all_nutritions.proteins }} / {{ data.1 }} g</p>
+                <p class="
+                {% if calculated_nutritions.all_nutritions.proteins <= daily_needs.1.1 and calculated_nutritions.all_nutritions.proteins >= daily_needs.1.0 %}
+                    green-line
+                {% else %}
+                    red-line
+                {% endif %}">{{ calculated_nutritions.all_nutritions.proteins }} / {{ daily_needs.1 }} g</p>
             </div>
             <div>
                 <p>Fats</p>
-                <p>{{ calculated_nutritions.all_nutritions.fats }} / {{ data.2 }} g</p>
+                <p class="
+                {% if calculated_nutritions.all_nutritions.fats <= daily_needs.2.1 and calculated_nutritions.all_nutritions.fats >= daily_needs.2.0 %}
+                    green-line
+                {% else %}
+                    red-line
+                {% endif %}">{{ calculated_nutritions.all_nutritions.fats }} / {{ daily_needs.2 }} g</p>
             </div>
             <div>
                 <p>Carbons</p>
-                <p>{{ calculated_nutritions.all_nutritions.carbons }} / {{ data.3 }} g</p>
+                <p class="
+                {% if calculated_nutritions.all_nutritions.carbons <= daily_needs.3.1 and calculated_nutritions.all_nutritions.carbons >= daily_needs.3.0 %}
+                    green-line
+                {% else %}
+                    red-line
+                {% endif %}">{{ calculated_nutritions.all_nutritions.carbons }} / {{ daily_needs.3 }} g</p>
             </div>
         </div>
 

@@ -162,3 +162,11 @@ a {
 .shopping-list-ul li input[type="checkbox"]:checked + label {
     text-decoration: line-through;
 }
+
+.green-line{
+    color: green;
+}
+
+.red-line{
+    color: red;
+}

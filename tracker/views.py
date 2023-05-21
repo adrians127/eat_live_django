@@ -91,13 +91,13 @@ def home(request, date=timezone.now().date()):
     
     print(type(date))
     meal_logs = MealLog.objects.filter(user=request.user.profile, date = date)
-    data = calculate_daily_stats(request)
+    daily_needs = calculate_daily_stats(request)
     calculated_nutritions = CalculatedNutritions()
     update_nutritions(calculated_nutritions, meal_logs)
 
     context = {'moment_of_day_choices': MOMENT_OF_DAY_CHOICES,
                 'meal_logs': meal_logs,
-                'data': data,
+                'daily_needs': daily_needs,
                 'calculated_nutritions': calculated_nutritions,
                 'date': date,
                 'previous_date': date-timedelta(days=1),
@@ -150,7 +150,8 @@ def update_meal_log(request, meal_log_id):
         return render(request, "update_meal_log.html", {"form": form, "meal_log": meal_log})
     
 @login_required
-def delete_meal_log(meal_log_id):
+def delete_meal_log(request, meal_log_id):
+    print(meal_log_id)
     MealLog.objects.filter(id=meal_log_id).delete()
     return redirect('home')
 
