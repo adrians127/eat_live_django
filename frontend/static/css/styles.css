@@ -144,3 +144,21 @@ a {
     justify-content: space-between;
     align-items: center;
 }
+
+.shopping-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.shopping-list-ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.shopping-list-ul > li {
+    padding: 10px 0;
+}
+
+.shopping-list-ul li input[type="checkbox"]:checked + label {
+    text-decoration: line-through;
+}

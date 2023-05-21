@@ -178,15 +178,18 @@ def shopping_list(request):
     shopping_products = ShoppingProduct.objects.filter(user=request.user.profile)
 
     if request.method == 'POST':
-        # Process the form submission
         form = AddShoppingProductForm(request.POST)
+        action = request.POST['action']
+        if action == 'delete':
+            product_ids = request.POST.getlist('product_ids[]')
+            ShoppingProduct.objects.filter(id__in=product_ids).delete()
+            return redirect('shopping_list')
         if form.is_valid():
             shopping_product = form.save(commit=False)
             shopping_product.user = request.user.profile
             shopping_product.save()
             return redirect('shopping_list')
     else:
-        # Display the form
         form = AddShoppingProductForm()
 
     context = {

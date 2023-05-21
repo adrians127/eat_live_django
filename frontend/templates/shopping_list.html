@@ -2,24 +2,35 @@
 
 {% block content %}
     <h1>Shopping list</h1>
-
-    <h2>Existing products</h2>
-    <ul>
-        {% for shopping_product in shopping_products %}
-            {% if shopping_product.amount == None %}
-            <li>{{ shopping_product.product.name }}</li>
-            {% else %}
-            <li>{{ shopping_product.product.name }} - {{ shopping_product.amount }} g</li>
-            {% endif %}
-        {% empty %}
-            <li>No products in the shopping list.</li>
-        {% endfor %}
-    </ul>
-
-    <h2>Add a new product</h2>
-    <form method="post" action="{% url 'shopping_list' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Add Product</button>
-    </form>
+    <div class="shopping-container">
+        <form method="post" action="{% url 'shopping_list' %}">
+            {% csrf_token %}
+            <h2>Your shopping list</h2>
+            <ul class="shopping-list-ul">
+                {% for shopping_product in shopping_products %}
+                    <li>
+                        <input type="checkbox" name="product_ids[]" value="{{ shopping_product.id }}" id="product_{{ shopping_product.id }}">
+                        <label for="product_{{ shopping_product.id }}" class="{% if shopping_product.amount is None %}unchecked{% endif %}">
+                            {% if shopping_product.amount is not None %}
+                                {{ shopping_product.product.name }} - {{ shopping_product.amount }} g
+                            {% else %}
+                                {{ shopping_product.product.name }}
+                            {% endif %}
+                        </label>
+                    </li>
+                {% empty %}
+                    <li>No products in the shopping list.</li>
+                {% endfor %}
+            </ul>
+    
+            <button type="submit" name="action" value="delete">Delete Selected</button>
+        </form>
+    
+        <form method="post" action="{% url 'shopping_list' %}">
+            <h2>Add product to shopping list</h2>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="action" value="add">Add Product</button>
+        </form>
+    </div>
 {% endblock content %}
