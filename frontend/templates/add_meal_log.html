@@ -76,6 +76,7 @@
         <button type="submit">Filter</button>
     </form>
 
+    {% if favourite_products %}
     <h2>Favourite products</h2>
     <div class="products-list-container">
         <div class="products-list-header">
@@ -85,7 +86,6 @@
             <p>Fats</p>
             <p>Carbons</p>
         </div>
-
         <div class="products-list-elements-container">
             {% for product in favourite_products %}
             <div>
@@ -94,10 +94,12 @@
                 <p>{{ product.proteins }}</p>
                 <p>{{ product.fats }}</p>
                 <p>{{ product.carbons }}</p>
+                <a href="{% url 'delete_favourite_product' product_id=product.pk %}"><button>Unlove</button></a>
             </div>
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 
     <h2>All products</h2>
     <div class="products-list-container">

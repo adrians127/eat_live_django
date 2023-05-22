@@ -142,8 +142,20 @@ def delete_meal_log(request, meal_log_id):
 
 @login_required
 def add_favourite_product(request, meal_log_id):
-    FavouriteProduct.objects.create(user=request.user.profile, product=MealLog.objects.get(id=meal_log_id).product)
+    product = MealLog.objects.get(id=meal_log_id).product
+    user = request.user.profile
+    if FavouriteProduct.objects.filter(user=user, product=product).exists():
+        return redirect('home')
+    FavouriteProduct.objects.create(user=user, product=product)
     return redirect('home')
+
+@login_required
+def delete_favourite_product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    favourite_product = FavouriteProduct.objects.get(user=request.user.profile, product=product)
+    favourite_product.delete()
+    return redirect(request.META.get("HTTP_REFERER"))
+
 
 @login_required
 def add_product(request):
