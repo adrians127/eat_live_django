@@ -10,5 +10,6 @@ urlpatterns = [
     path('delete_meal/<int:meal_log_id>/', views.delete_meal_log, name='delete_meal'),
     path('add_favourite_product/<int:meal_log_id>/', views.add_favourite_product, name='add_favourite_product'),
     path('add_product/', views.add_product, name='add_product'),
-    path('shopping_list/', views.shopping_list, name='shopping_list')
+    path('shopping_list/', views.shopping_list, name='shopping_list'),
+    path('product_list/', views.product_list, name='product_list'),
 ]

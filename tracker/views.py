@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from datetime import timedelta, datetime
-from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct
+from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product
 from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm
 from calculators.calories_calculator import calculate_nutritions
 
@@ -112,6 +112,8 @@ def home_history(request, date):
         return add_product(request)
     if date == 'shopping_list':
         return shopping_list(request)
+    if date == 'product_list':
+        return product_list(request)
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date.split(' ')[0], date_format).date()
     print(date)
@@ -198,3 +200,47 @@ def shopping_list(request):
         'form': form
     }
     return render(request, 'shopping_list.html', context)
+
+
+@login_required
+def product_list(request):
+    query = request.GET.get('search')
+    min_calories = request.GET.get('min_calories')
+    max_calories = request.GET.get('max_calories')
+    min_proteins = request.GET.get('min_proteins')
+    max_proteins = request.GET.get('max_proteins')
+    min_fats = request.GET.get('min_fats')
+    max_fats = request.GET.get('max_fats')
+    min_carbons = request.GET.get('min_carbons')
+    max_carbons = request.GET.get('max_carbons')
+
+    user = request.user
+    favorite_products = user.profile.favouriteproduct_set.all()
+
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(name__icontains=query)
+    if min_calories:
+        products = products.filter(calories__gte=min_calories)
+    if max_calories:
+        products = products.filter(calories__lte=max_calories)
+
+    if min_proteins:
+        products = products.filter(proteins__gte=min_proteins)
+    if max_proteins:
+        products = products.filter(proteins__lte=max_proteins)
+
+    if min_fats:
+        products = products.filter(fats__gte=min_fats)
+    if max_fats:
+        products = products.filter(fats__lte=max_fats)
+
+    if min_carbons:
+        products = products.filter(carbons__gte=min_carbons)
+    if max_carbons:
+        products = products.filter(carbons__lte=max_carbons)
+        
+
+    return render(request, 'product_list.html', {'products': products,
+                                                 'favourite_products': favorite_products})
