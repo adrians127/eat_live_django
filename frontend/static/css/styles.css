@@ -197,3 +197,28 @@ a {
     grid-template-columns: 1fr 1fr;
     margin: 10px 0;
 }
+
+.recipes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10%;
+}
+.recipes-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.recipes-list-container div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-for-recipe{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group{
+    padding: 10px 0;
+}

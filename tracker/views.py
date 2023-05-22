@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from datetime import timedelta, datetime
-from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product
+from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product, Recipe, RecipeDetail
 from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm
 from calculators.calories_calculator import calculate_nutritions
 
@@ -114,6 +114,8 @@ def home_history(request, date):
         return shopping_list(request)
     if date == 'product_list':
         return product_list(request)
+    if date == 'recipe_list':
+        return recipe_list(request)
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date.split(' ')[0], date_format).date()
     print(date)
@@ -181,25 +183,6 @@ def shopping_list(request):
         'form': form
     }
     return render(request, 'shopping_list.html', context)
-
-# @login_required
-# def add_meal_log(request, moment_of_day):
-#     if request.method == "POST":
-#         form = AddMealLogForm(request.POST)
-#         if form.is_valid():
-
-#             meal = form.save(commit=False)
-#             meal.user = request.user.profile
-#             meal.save()
-
-#             return redirect('home')
-
-#             #nie udało się
-#         return render(request, 'add_meal_log.html', {"form": form})
-#     else:
-#         form = AddMealLogForm()
-#         form.fields['moment_of_day'].initial = moment_of_day
-#         return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day})
 
 @login_required
 def add_meal_log(request, moment_of_day):
@@ -318,3 +301,33 @@ def product_list(request):
 
     return render(request, 'product_list.html', {'products': products,
                                                  'favourite_products': favourite_products})
+
+@login_required
+def recipe_list(request):
+    recipes = Recipe.objects.all()
+    products = Product.objects.all()
+    if request.method == "POST":
+        recipe_name = request.POST.get('recipe_name')
+        recipe_description = request.POST.get('recipe_description')
+        recipe = Recipe.objects.create(name=recipe_name, description=recipe_description)
+
+        product_ids = request.POST.getlist('product_ids[]')
+        amounts = request.POST.getlist('amounts[]')
+        for product_id, amount in zip(product_ids, amounts):
+            if not amount:
+                continue
+            print(product_id)
+            print(amount)
+            product = Product.objects.get(pk=product_id)
+            RecipeDetail.objects.create(recipe=recipe, product=product, amount=amount)
+        
+        return redirect('recipe_list')
+
+    return render(request, 'recipe_list.html', {'recipes': recipes, 'products': products})
+
+@login_required
+def recipe_details(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    recipe_details = RecipeDetail.objects.filter(recipe = recipe)
+    return render(request, 'recipe_details.html', {'recipe': recipe,
+        'recipe_details': recipe_details})

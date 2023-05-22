@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Recipes</h1>
+<div class="recipes">
+    <div class="recipes-list-container">
+        {% for recipe in recipes %}
+        <div>
+            <p>{{ recipe.name }}</p>
+            <a href="{% url 'recipe_details' recipe_id=recipe.pk %}">
+                <button>More</button>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <form method="post">
+        <h2>Add recipe</h2>
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="recipe_name">Recipe Name:</label>
+            <input type="text" id="recipe_name" name="recipe_name" required>
+        </div>
+        <div class="form-group">
+            <label for="recipe_description">Recipe Description:</label>
+            <textarea id="recipe_description" name="recipe_description" required></textarea>
+        </div>
+        <div class="product-for-recipe">
+            {% for product in products %}
+            <div>
+                <input type="checkbox" name="product_ids[]" value="{{ product.id }}" id="product_{{ product.id }}">
+                <label for="product_{{ product.id }}">{{ product.name }}</label>
+                <input type="number" name="amounts[]" id="amount">
+            </div>
+
+            {% endfor %}
+            </select>
+        </div>
+        <button type="submit">Add Recipe</button>
+    </form>
+</div>
+{% endblock %}

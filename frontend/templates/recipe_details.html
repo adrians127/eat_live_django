@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Recipe details</h1>
+<h2>{{ recipe.name }}</h2>
+<ul>
+    {% for recipe_detail in recipe_details %}
+    <li>{{ recipe_detail.product.name }} - {{ recipe_detail.amount }} g</li>
+    {% endfor %}
+</ul>
+<blockquote>{{ recipe.description }}</blockquote>
+{% endblock %}
