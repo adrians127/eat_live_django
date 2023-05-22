@@ -121,25 +121,6 @@ def home_history(request, date):
 
 
 @login_required
-def add_meal_log(request, moment_of_day):
-    if request.method == "POST":
-        form = AddMealLogForm(request.POST)
-        if form.is_valid():
-
-            meal = form.save(commit=False)
-            meal.user = request.user.profile
-            meal.save()
-
-            return redirect('home')
-
-            #nie udało się
-        return render(request, 'add_meal_log.html', {"form": form})
-    else:
-        form = AddMealLogForm()
-        form.fields['moment_of_day'].initial = moment_of_day
-        return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day})
-
-@login_required
 def update_meal_log(request, meal_log_id):
     meal_log = MealLog.objects.get(id=meal_log_id)
     if request.method == "POST":
@@ -200,6 +181,90 @@ def shopping_list(request):
         'form': form
     }
     return render(request, 'shopping_list.html', context)
+
+# @login_required
+# def add_meal_log(request, moment_of_day):
+#     if request.method == "POST":
+#         form = AddMealLogForm(request.POST)
+#         if form.is_valid():
+
+#             meal = form.save(commit=False)
+#             meal.user = request.user.profile
+#             meal.save()
+
+#             return redirect('home')
+
+#             #nie udało się
+#         return render(request, 'add_meal_log.html', {"form": form})
+#     else:
+#         form = AddMealLogForm()
+#         form.fields['moment_of_day'].initial = moment_of_day
+#         return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day})
+
+@login_required
+def add_meal_log(request, moment_of_day):
+    query = request.GET.get('search')
+    min_calories = request.GET.get('min_calories')
+    max_calories = request.GET.get('max_calories')
+    min_proteins = request.GET.get('min_proteins')
+    max_proteins = request.GET.get('max_proteins')
+    min_fats = request.GET.get('min_fats')
+    max_fats = request.GET.get('max_fats')
+    min_carbons = request.GET.get('min_carbons')
+    max_carbons = request.GET.get('max_carbons')
+
+    user = request.user.profile
+    favourite_products = Product.objects.filter(favouriteproduct__user = user)
+    products = Product.objects.all()
+
+    if query:
+        products = products.filter(name__icontains=query)
+        favourite_products = favourite_products.filter(name__icontains=query)
+
+    if min_calories:
+        products = products.filter(calories__gte=min_calories)
+        favourite_products = favourite_products.filter(calories__gte=min_calories)
+    if max_calories:
+        products = products.filter(calories__lte=max_calories)
+        favourite_products = favourite_products.filter(calories__lte=max_calories)
+
+    if min_proteins:
+        products = products.filter(proteins__gte=min_proteins)
+        favourite_products = favourite_products.filter(proteins__gte=min_proteins)
+    if max_proteins:
+        products = products.filter(proteins__lte=max_proteins)
+        favourite_products = favourite_products.filter(proteins__lte=max_proteins)
+
+    if min_fats:
+        products = products.filter(fats__gte=min_fats)
+        favourite_products = favourite_products.filter(fats__gte=min_fats)
+    if max_fats:
+        products = products.filter(fats__lte=max_fats)
+        favourite_products = favourite_products.filter(fats__lte=max_fats)
+
+    if min_carbons:
+        products = products.filter(carbons__gte=min_carbons)
+        favourite_products = favourite_products.filter(carbons__gte=min_carbons)
+    if max_carbons:
+        products = products.filter(carbons__lte=max_carbons)
+        favourite_products = favourite_products.filter(carbons__lte=max_carbons)
+
+
+    if request.method == "POST":
+        form = AddMealLogForm(request.POST)
+        print(request.POST)
+        if form.is_valid():
+            meal = form.save(commit=False)
+            meal.user = request.user.profile
+            meal.save()
+            return redirect('home')
+        else:
+            return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day, "products": products, 'favourite_products': favourite_products})
+    else:
+        form = AddMealLogForm()
+        form.fields['moment_of_day'].initial = moment_of_day
+        form.fields['date'].initial = timezone.now().date()
+        return render(request, 'add_meal_log.html', {"form": form, "moment_of_day": moment_of_day, "products": products, 'favourite_products': favourite_products})
 
 
 @login_required

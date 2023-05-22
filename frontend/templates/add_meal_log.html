@@ -4,7 +4,120 @@
     <h1>Add a meal</h1>
     <form method="POST" action="{% url 'add_meal' moment_of_day %}">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div>
+            <label for="id_product">Product:</label>
+            <select name="product" id="id_product">
+                {% for product in products %}
+                <option value="{{ product.pk }}">{{ product.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {{ form.amount.errors }}
+        <div>
+            <label for="id_amount">Amount:</label>
+            {{ form.amount }}
+        </div>
+        <div>
+            <label for="id_date">Date:</label>
+            {{ form.date }}
+        </div>
+        {{ form.moment_of_day.errors }}
+        {{ form.date.errors }}
+        <input type="hidden" name="moment_of_day" value="{{ moment_of_day }}">
         <button type="submit">Add</button>
     </form>
+
+    <h2>Product List</h2>
+    <form class="products-list-filters-container" action="{% url 'add_meal' moment_of_day %}">
+        <div>
+            <input type="text" name="search" placeholder="Search by name" value="{{ request.GET.search }}">
+        </div>
+        <div>
+            <div>
+                <label for="min_calories">Min Calories:</label>
+                <input type="number" name="min_calories" id="min_calories" value="{{ request.GET.min_calories }}">
+            </div>
+            <div>
+                <label for="max_calories">Max Calories:</label>
+                <input type="number" name="max_calories" id="max_calories" value="{{ request.GET.max_calories }}">
+            </div>
+            
+        </div>
+        <div>
+            <div>
+                <label for="min_proteins">Min Proteins:</label>
+                <input type="number" name="min_proteins" id="min_proteins" value="{{ request.GET.min_proteins }}">
+            </div>
+            <div>
+                <label for="max_proteins">Max Proteins:</label>
+                <input type="number" name="max_proteins" id="max_proteins" value="{{ request.GET.max_proteins }}">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="min_fats">Min Fats:</label>
+                <input type="number" name="min_fats" id="min_fats" value="{{ request.GET.min_fats }}">
+            </div>
+            <div>
+                <label for="max_fats">Max Fats:</label>
+                <input type="number" name="max_fats" id="max_fats" value="{{ request.GET.max_fats }}">
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="min_carbons">Min Carbons:</label>
+                <input type="number" name="min_carbons" id="min_carbons" value="{{ request.GET.min_carbons }}">
+            </div>
+            <div>
+                <label for="max_carbons">Max Carbons:</label>
+                <input type="number" name="max_carbons" id="max_carbons" value="{{ request.GET.max_carbons }}">
+            </div>
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+
+    <h2>Favourite products</h2>
+    <div class="products-list-container">
+        <div class="products-list-header">
+            <p>Name</p>
+            <p>Calories</p>
+            <p>Proteins</p>
+            <p>Fats</p>
+            <p>Carbons</p>
+        </div>
+
+        <div class="products-list-elements-container">
+            {% for product in favourite_products %}
+            <div>
+                <p>{{ product.name }}</p>
+                <p>{{ product.calories }}</p>
+                <p>{{ product.proteins }}</p>
+                <p>{{ product.fats }}</p>
+                <p>{{ product.carbons }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h2>All products</h2>
+    <div class="products-list-container">
+        <div class="products-list-header">
+            <p>Name</p>
+            <p>Calories</p>
+            <p>Proteins</p>
+            <p>Fats</p>
+            <p>Carbons</p>
+        </div>
+        <div class="products-list-elements-container">
+            {% for product in products %}
+            <div>
+                <p>{{ product.name }}</p>
+                <p>{{ product.calories }}</p>
+                <p>{{ product.proteins }}</p>
+                <p>{{ product.fats }}</p>
+                <p>{{ product.carbons }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %}
