@@ -170,3 +170,30 @@ a {
 .red-line{
     color: red;
 }
+
+.products-list-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.products-list-header {
+    font-size: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.products-list-elements-container > div {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.products-list-elements-container > div > p {
+    margin: 5px;
+}
+
+.products-list-filters-container > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 0;
+}

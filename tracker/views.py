@@ -214,33 +214,42 @@ def product_list(request):
     min_carbons = request.GET.get('min_carbons')
     max_carbons = request.GET.get('max_carbons')
 
-    user = request.user
-    favorite_products = user.profile.favouriteproduct_set.all()
+    user = request.user.profile
+    favourite_products = Product.objects.filter(favouriteproduct__user = user)
 
     products = Product.objects.all()
 
     if query:
         products = products.filter(name__icontains=query)
+        favourite_products = favourite_products.filter(name__icontains=query)
+
     if min_calories:
         products = products.filter(calories__gte=min_calories)
+        favourite_products = favourite_products.filter(calories__gte=min_calories)
     if max_calories:
         products = products.filter(calories__lte=max_calories)
+        favourite_products = favourite_products.filter(calories__lte=max_calories)
 
     if min_proteins:
         products = products.filter(proteins__gte=min_proteins)
+        favourite_products = favourite_products.filter(proteins__gte=min_proteins)
     if max_proteins:
         products = products.filter(proteins__lte=max_proteins)
+        favourite_products = favourite_products.filter(proteins__lte=max_proteins)
 
     if min_fats:
         products = products.filter(fats__gte=min_fats)
+        favourite_products = favourite_products.filter(fats__gte=min_fats)
     if max_fats:
         products = products.filter(fats__lte=max_fats)
+        favourite_products = favourite_products.filter(fats__lte=max_fats)
 
     if min_carbons:
         products = products.filter(carbons__gte=min_carbons)
+        favourite_products = favourite_products.filter(carbons__gte=min_carbons)
     if max_carbons:
         products = products.filter(carbons__lte=max_carbons)
-        
+        favourite_products = favourite_products.filter(carbons__lte=max_carbons)
 
     return render(request, 'product_list.html', {'products': products,
-                                                 'favourite_products': favorite_products})
+                                                 'favourite_products': favourite_products})
