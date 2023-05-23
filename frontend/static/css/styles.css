@@ -184,9 +184,16 @@ a {
 
 .products-list-elements-container > div {
     display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.products-list-elements-container .favourite {
+    display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
 }
+
 
 .products-list-elements-container > div > p {
     margin: 5px;
