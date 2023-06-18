@@ -3,9 +3,10 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from datetime import timedelta, datetime
-from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product, Recipe, RecipeDetail
-from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm, UpdateRecipeForm
+from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product, Recipe, RecipeDetail, DayExtraStat
+from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm, UpdateDayExtraStat
 from calculators.calories_calculator import calculate_nutritions
+from calculators.water_calculator import water_calculate
 
 class Nutritions:
     def __init__(self) -> None:
@@ -33,10 +34,11 @@ class CalculatedNutritions:
                 attr.carbons = round(attr.carbons, 2)
 
 @login_required
-def calculate_daily_stats(request):
+def calculate_daily_stats(request, burned_calories):
     person = request.user.profile
     person_data = calculate_nutritions(person.weight, person.height, person.age, person.gender, person.activity_level)
-    return person_data
+    new_person_data = (person_data[0]+burned_calories,) + person_data[1:]
+    return new_person_data
 
 def update_nutritions(calculated_nutritions, meal_logs):
     for next in meal_logs:
@@ -85,14 +87,27 @@ def update_nutritions(calculated_nutritions, meal_logs):
 
         calculated_nutritions.round_values()
 
+def water_and_training(user, date):
+    extra_info = DayExtraStat.objects.filter(user=user, date = date)
+    print(extra_info)
+    if not extra_info.exists():
+        DayExtraStat.objects.create(user=user, date=date)
+        return 0, 0
+    else:
+        extra_info = DayExtraStat.objects.get(user=user, date=date)
+        return extra_info.water, extra_info.training
+
 def home(request, date=timezone.now().date()):
     if not request.user.is_authenticated:
         return render(request, 'home.html')
     
     print(type(date))
-    meal_logs = MealLog.objects.filter(user=request.user.profile, date = date)
-    daily_needs = calculate_daily_stats(request)
+    user=request.user.profile
+    meal_logs = MealLog.objects.filter(user=user, date = date)
     calculated_nutritions = CalculatedNutritions()
+    water, burned_calories = water_and_training(user, date)
+    daily_needs = calculate_daily_stats(request, burned_calories)
+    max_water = water_calculate(user.age, user.gender)
     update_nutritions(calculated_nutritions, meal_logs)
 
     context = {'moment_of_day_choices': MOMENT_OF_DAY_CHOICES,
@@ -101,7 +116,11 @@ def home(request, date=timezone.now().date()):
                 'calculated_nutritions': calculated_nutritions,
                 'date': date,
                 'previous_date': date-timedelta(days=1),
-                'next_date': date+timedelta(days=1)}
+                'next_date': date+timedelta(days=1),
+                'date': date,
+                'burned_calories': burned_calories,
+                'water': water,
+                "max_water": max_water}
     
     return render(request, 'home.html', context)
 
@@ -116,6 +135,8 @@ def home_history(request, date):
         return product_list(request)
     if date == 'recipe_list':
         return recipe_list(request)
+    # if date == 'update_extra':
+    #     return update_extra(request)
     date_format = "%Y-%m-%d"
     date = datetime.strptime(date.split(' ')[0], date_format).date()
     print(date)
@@ -370,3 +391,15 @@ def delete_recipe(request, recipe_id):
     print("gowno")
     Recipe.objects.filter(id=recipe_id).delete()
     return redirect('recipe_list')
+
+@login_required
+def update_extra(request, date):
+    stat = DayExtraStat.objects.get(user=request.user.profile, date=date)
+    if request.method == "POST":
+        form = UpdateDayExtraStat(request.POST, instance=stat)
+        if form.is_valid():
+            form.save()
+            return redirect("/" + date)
+    else:
+        form = UpdateDayExtraStat(instance=stat)
+        return render(request, 'update_dayextrastat.html', {"form": form, "stat": stat, "date": date})

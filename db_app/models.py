@@ -70,3 +70,12 @@ class ShoppingProduct(models.Model):
 
     def __str__(self):
         return str(self.user) + " " + str(self.product) + " " + str(self.amount)
+
+class DayExtraStat(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now())
+    water = models.IntegerField(default=0)
+    training = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user) + " " + str(self.date) + " " + str(self.water)+ " " + str(self.training)

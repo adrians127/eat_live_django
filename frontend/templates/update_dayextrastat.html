@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Update water and training</h1>
+    <form action="{% url 'update_extra' date=date %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="submit">Submit</button>
+    </form>
+{% endblock content %}

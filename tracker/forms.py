@@ -1,5 +1,5 @@
 from django import forms
-from db_app.models import MealLog, Product, ShoppingProduct, Recipe
+from db_app.models import MealLog, Product, ShoppingProduct, DayExtraStat
 
 
 class AddMealLogForm(forms.ModelForm):
@@ -22,7 +22,7 @@ class AddShoppingProductForm(forms.ModelForm):
         model = ShoppingProduct
         fields = ['product', 'amount']
 
-class UpdateRecipeForm(forms.ModelForm):
+class UpdateDayExtraStat(forms.ModelForm):
     class Meta:
-        model = Recipe
-        fields = ['name', 'description']
+        model = DayExtraStat
+        fields = ['water', 'training']

@@ -76,7 +76,6 @@
             </div>
             {% endfor %}
         </div>
-        <!-- class="{% if calculated_nutritions.all_nutritions.calories >= daily_needs.0 %}green-line{% endif %}" -->
         <div class="daily-stats-container">
             <div>
                 <p>Calories</p>
@@ -114,6 +113,24 @@
                     red-line
                 {% endif %}">{{ calculated_nutritions.all_nutritions.carbons }} / {{ daily_needs.3 }} g</p>
             </div>
+        </div>
+        <div class="daily-stats-container">
+            <div>
+                <p>Water</p>
+                <p class="
+                {% if water >= max_water %}
+                    green-line
+                {% else %}
+                    red-line
+                {% endif %}"> {{ water }} / {{ max_water }} ml</p>
+            </div>
+            <div>
+                <p>Training</p>
+                <p> {{ burned_calories }} kcal</p>
+            </div>
+            <a href="{% url 'update_extra' date=date %}">
+                <button>edit</button>
+            </a>
         </div>
 
 
