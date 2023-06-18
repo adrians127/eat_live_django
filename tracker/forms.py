@@ -21,3 +21,8 @@ class AddShoppingProductForm(forms.ModelForm):
     class Meta:
         model = ShoppingProduct
         fields = ['product', 'amount']
+
+class UpdateRecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
+        fields = ['name', 'description']

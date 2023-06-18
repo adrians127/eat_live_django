@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Recipe details</h1>
-<h2>{{ recipe.name }}</h2>
+<h1>{{ recipe.name }}</h1>
+<h2>Description: </h2>
+<h4>{{ recipe.description }}</h4>
+
+<h2>Ingredients: </h2>
 <ul>
     {% for recipe_detail in recipe_details %}
-    <li>{{ recipe_detail.product.name }} - {{ recipe_detail.amount }} g</li>
+        {% if recipe_detail.amount == -1 %}
+        <li>{{ recipe_detail.product.name }} - nie określono ilości</li>
+        {% else %}
+        <li>{{ recipe_detail.product.name }} - {{ recipe_detail.amount }} g</li>
+        {% endif %}
     {% endfor %}
 </ul>
-<blockquote>{{ recipe.description }}</blockquote>
+<a href="{% url 'update_recipe' recipe_id=recipe.pk %}">
+    <button>Edit</button>
+</a>
+
 {% endblock %}

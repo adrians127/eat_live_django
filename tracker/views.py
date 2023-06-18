@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from datetime import timedelta, datetime
 from db_app.models import MOMENT_OF_DAY_CHOICES, MealLog, FavouriteProduct, ShoppingProduct, Product, Recipe, RecipeDetail
-from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm
+from .forms import AddMealLogForm, UpdateMealLogForm, AddProductForm, AddShoppingProductForm, UpdateRecipeForm
 from calculators.calories_calculator import calculate_nutritions
 
 class Nutritions:
@@ -326,11 +326,9 @@ def recipe_list(request):
         product_ids = request.POST.getlist('product_ids[]')
         amounts = request.POST.getlist('amounts[]')
         for product_id, amount in zip(product_ids, amounts):
-            if not amount:
-                continue
-            print(product_id)
-            print(amount)
             product = Product.objects.get(pk=product_id)
+            if not amount:
+                amount = -1
             RecipeDetail.objects.create(recipe=recipe, product=product, amount=amount)
         
         return redirect('recipe_list')
@@ -338,8 +336,37 @@ def recipe_list(request):
     return render(request, 'recipe_list.html', {'recipes': recipes, 'products': products})
 
 @login_required
+def update_recipe(request, recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    products = Product.objects.all()
+    recipe_details = RecipeDetail.objects.filter(recipe = recipe)
+    if request.method == "POST":
+        recipe.name = request.POST.get('recipe_name')
+        recipe.description = request.POST.get('recipe_description')
+        recipe.save()
+        recipe_details.delete()
+
+        product_ids = request.POST.getlist('product_ids[]')
+        amounts = request.POST.getlist('amounts[]')
+        for product_id, amount in zip(product_ids, amounts):
+            product = Product.objects.get(pk=product_id)
+            if not amount:
+                amount = -1
+            RecipeDetail.objects.create(recipe=recipe, product=product, amount=amount)
+        return redirect('recipe_list')
+    else:
+        return render(request, "update_recipe.html", {"products": products, "recipe": recipe, "recipe_details": recipe_details})
+
+
+@login_required
 def recipe_details(request, recipe_id):
     recipe = Recipe.objects.get(id=recipe_id)
     recipe_details = RecipeDetail.objects.filter(recipe = recipe)
     return render(request, 'recipe_details.html', {'recipe': recipe,
         'recipe_details': recipe_details})
+
+@login_required
+def delete_recipe(request, recipe_id):
+    print("gowno")
+    Recipe.objects.filter(id=recipe_id).delete()
+    return redirect('recipe_list')

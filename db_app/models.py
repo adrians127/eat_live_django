@@ -41,7 +41,7 @@ class Recipe(models.Model):
 class RecipeDetail(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=0)
+    amount = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return str(self.recipe) + "-" + str(self.product)
