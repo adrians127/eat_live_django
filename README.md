@@ -1,4 +1,4 @@
-# eat-live
+# calories_counter
 A web application for counting calories
 ## Get started
 In repository folder write commands:
